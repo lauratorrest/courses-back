@@ -1,0 +1,10 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: courses-back
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}/${DB_NAME}
+  jwt:
+    secret: ${SECRET_KEY}
