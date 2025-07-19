@@ -2,6 +2,7 @@ package com.company.coursya.api.controller;
 
 import com.company.coursya.api.dto.authentication.RegisterResponse;
 import com.company.coursya.api.dto.authentication.RegistrationRequest;
+import com.company.coursya.api.dto.authentication.SignInRequest;
 import com.company.coursya.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,10 +24,16 @@ public class AthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @Operation(summary = "Pre-registration")
+    @Operation(summary = "Registration")
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> signUpUser(@Valid @RequestBody RegistrationRequest request) {
         return ResponseEntity.ok(authenticationService.savePreRegisterData(
                 request.getEmail(), request.getConfirmEmail(), request.getFullName(), request.getPassword()));
+    }
+
+    @Operation(summary = "Sign In")
+    @PostMapping("/sign-in")
+    public ResponseEntity<RegisterResponse> signInUser(@Valid @RequestBody SignInRequest request) {
+        return ResponseEntity.ok(authenticationService.signInUser(request.getEmail(), request.getPassword()));
     }
 }

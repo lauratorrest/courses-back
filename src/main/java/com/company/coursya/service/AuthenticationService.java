@@ -7,4 +7,6 @@ public interface AuthenticationService {
     RegisterResponse savePreRegisterData(String email,
                                          String confirmEmail,
                                          String fullName, String password);
+
+    RegisterResponse signInUser(String email, String password);
 }

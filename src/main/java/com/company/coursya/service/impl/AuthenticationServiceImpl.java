@@ -8,7 +8,9 @@ import com.company.coursya.service.AuthenticationService;
 import com.company.coursya.service.UserService;
 import com.company.coursya.shared.exceptions.ExceptionCode;
 import com.company.coursya.shared.exceptions.exceptions.EmailAlreadyRegisteredException;
+import com.company.coursya.shared.exceptions.exceptions.EmailNotRegisteredException;
 import com.company.coursya.shared.exceptions.exceptions.NotTheSameEmailException;
+import com.company.coursya.shared.exceptions.exceptions.WrongPasswordException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,7 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         Boolean emailAlreadyRegistered = authenticationRepository.existsByEmail(email);
-        if (emailAlreadyRegistered) {
+        if (Boolean.TRUE.equals(emailAlreadyRegistered)) {
             throw new EmailAlreadyRegisteredException(ExceptionCode.EMAIL_ALREADY_EXISTS);
         }
 
@@ -45,10 +47,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .password(passwordEncoder.encode(password))
                         .createdDate(ZonedDateTime.now(ZoneId.of("America/Bogota")).toLocalDateTime())
                         .build());
-        User savedUser = userService.saveUser(fullName);
+        User savedUser = userService.saveUser(fullName, authData.getId());
+        return buildRegisterResponse(authData.getEmail(), savedUser.getFullName());
+    }
+
+    @Override
+    public RegisterResponse signInUser(String email, String password) {
+        AuthenticationData authData = authenticationRepository.findByEmail(email).orElseThrow(
+                () -> new EmailNotRegisteredException(ExceptionCode.NOT_REGISTERED));
+
+        if (!passwordEncoder.matches(password, authData.getPassword())) {
+            throw new WrongPasswordException(ExceptionCode.WRONG_PASSWORD);
+        }
+
+        User userData = userService.findByAuthId(authData.getId());
+
+        return buildRegisterResponse(authData.getEmail(), userData.getFullName());
+    }
+
+    private RegisterResponse buildRegisterResponse(String email, String fullName) {
         return RegisterResponse.builder()
-                .email(authData.getEmail())
-                .fullName(savedUser.getFullName())
+                .email(email)
+                .fullName(fullName)
                 .build();
     }
 }
