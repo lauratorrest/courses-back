@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class PreRegisterResponse {
+public class RegisterResponse {
 
     private String email;
     private String fullName;

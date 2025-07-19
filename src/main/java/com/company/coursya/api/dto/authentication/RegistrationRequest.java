@@ -31,7 +31,9 @@ public class RegistrationRequest {
 
     @Schema(description = "User password")
     @Size(min = 8, message = "User password must be {min} characters or more")
-    @Pattern(regexp = "^(?=.*[A-Za-z0-9@#$%^&+=*]).{8,100}$",
-            message = "Password must contain letters, numbers and special characters, and be at least 8 characters long")
+    @Pattern(
+            regexp = "^(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$",
+            message = "La contraseña debe tener al menos una mayúscula, un número y mínimo 8 caracteres"
+    )
     private String password;
 }

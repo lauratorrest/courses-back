@@ -1,6 +1,6 @@
 package com.company.coursya.service.impl;
 
-import com.company.coursya.api.dto.authentication.PreRegisterResponse;
+import com.company.coursya.api.dto.authentication.RegisterResponse;
 import com.company.coursya.model.AuthenticationData;
 import com.company.coursya.model.User;
 import com.company.coursya.repository.AuthenticationRepository;
@@ -10,6 +10,7 @@ import com.company.coursya.shared.exceptions.ExceptionCode;
 import com.company.coursya.shared.exceptions.exceptions.EmailAlreadyRegisteredException;
 import com.company.coursya.shared.exceptions.exceptions.NotTheSameEmailException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -18,13 +19,14 @@ import java.util.Objects;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final AuthenticationRepository authenticationRepository;
     private final UserService userService;
 
     @Override
-    public PreRegisterResponse savePreRegisterData(String email, String confirmEmail, String fullName) {
+    public RegisterResponse savePreRegisterData(String email, String confirmEmail, String fullName, String password) {
         if (!Objects.equals(email, confirmEmail)) {
             throw new NotTheSameEmailException(ExceptionCode.NOT_THE_SAME_EMAIL);
         }
@@ -38,11 +40,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 AuthenticationData.builder()
                         .email(email)
                         .active(Boolean.FALSE)
+                        .password(password)
                         .createdDate(ZonedDateTime.now(ZoneId.of("America/Bogota")).toLocalDateTime())
                         .build());
         User savedUser = userService.saveUser(fullName);
-
-        return PreRegisterResponse.builder()
+        log.info("Info: {}", authData);
+        return RegisterResponse.builder()
                 .email(authData.getEmail())
                 .fullName(savedUser.getFullName())
                 .build();
