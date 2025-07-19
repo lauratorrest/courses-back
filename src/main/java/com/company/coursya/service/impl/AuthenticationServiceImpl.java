@@ -9,6 +9,7 @@ import com.company.coursya.service.UserService;
 import com.company.coursya.shared.exceptions.ExceptionCode;
 import com.company.coursya.shared.exceptions.exceptions.EmailAlreadyRegisteredException;
 import com.company.coursya.shared.exceptions.exceptions.EmailNotRegisteredException;
+import com.company.coursya.shared.exceptions.exceptions.InactiveUserException;
 import com.company.coursya.shared.exceptions.exceptions.NotTheSameEmailException;
 import com.company.coursya.shared.exceptions.exceptions.WrongPasswordException;
 import lombok.AllArgsConstructor;
@@ -43,7 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         AuthenticationData authData = authenticationRepository.save(
                 AuthenticationData.builder()
                         .email(email)
-                        .active(Boolean.FALSE)
+                        .active(Boolean.TRUE)
                         .password(passwordEncoder.encode(password))
                         .createdDate(ZonedDateTime.now(ZoneId.of("America/Bogota")).toLocalDateTime())
                         .build());
@@ -55,6 +56,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public RegisterResponse signInUser(String email, String password) {
         AuthenticationData authData = authenticationRepository.findByEmail(email).orElseThrow(
                 () -> new EmailNotRegisteredException(ExceptionCode.NOT_REGISTERED));
+
+        if(authData.getActive() == Boolean.FALSE){
+            throw new InactiveUserException(ExceptionCode.INACTIVE_USER);
+        }
 
         if (!passwordEncoder.matches(password, authData.getPassword())) {
             throw new WrongPasswordException(ExceptionCode.WRONG_PASSWORD);

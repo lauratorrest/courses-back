@@ -11,7 +11,8 @@ public enum ExceptionCode {
     EMAIL_ALREADY_EXISTS("ERR-002", "El correo ya se encuentra registrado"),
     NOT_REGISTERED("ERR-003", "No tenemos registrado ese correo."),
     WRONG_PASSWORD("ERR-004", "Contraseña equivocada."),
-    USER_NOT_FOUND("ERR-005", "No hay ningún usuario asociado al correo.");
+    USER_NOT_FOUND("ERR-005", "No hay ningún usuario asociado al correo."),
+    INACTIVE_USER("ERR-006", "Usuario inactivo");
 
     private final String code;
     private final String message;
