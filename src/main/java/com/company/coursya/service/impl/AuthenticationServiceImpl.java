@@ -11,6 +11,7 @@ import com.company.coursya.shared.exceptions.exceptions.EmailAlreadyRegisteredEx
 import com.company.coursya.shared.exceptions.exceptions.NotTheSameEmailException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -24,6 +25,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final AuthenticationRepository authenticationRepository;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public RegisterResponse savePreRegisterData(String email, String confirmEmail, String fullName, String password) {
@@ -40,11 +42,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 AuthenticationData.builder()
                         .email(email)
                         .active(Boolean.FALSE)
-                        .password(password)
+                        .password(passwordEncoder.encode(password))
                         .createdDate(ZonedDateTime.now(ZoneId.of("America/Bogota")).toLocalDateTime())
                         .build());
         User savedUser = userService.saveUser(fullName);
-        log.info("Info: {}", authData);
         return RegisterResponse.builder()
                 .email(authData.getEmail())
                 .fullName(savedUser.getFullName())

@@ -3,20 +3,7 @@ server:
 spring:
   application:
     name: courses-back
-    path: /coursya/v1/api/authentication
+    path: /coursya/v1/api
   data:
     mongodb:
       uri: ${MONGODB_URI}/${DB_NAME}
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: lauratorrest2002@gmail.com
-    password: Sofia3005192328*
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
-
-    kafka:
-      bootstrap-servers: localhost:9092
-  jwt:
-    secret: ${SECRET_KEY}
