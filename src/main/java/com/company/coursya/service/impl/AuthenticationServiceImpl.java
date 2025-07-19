@@ -1,8 +1,10 @@
 package com.company.coursya.service.impl;
 
 import com.company.coursya.api.dto.authentication.RegisterResponse;
+import com.company.coursya.api.dto.authentication.SignInResponse;
+import com.company.coursya.jwt.JwtService;
 import com.company.coursya.model.AuthenticationData;
-import com.company.coursya.model.User;
+import com.company.coursya.model.UserData;
 import com.company.coursya.repository.AuthenticationRepository;
 import com.company.coursya.service.AuthenticationService;
 import com.company.coursya.service.UserService;
@@ -29,9 +31,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationRepository authenticationRepository;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Override
-    public RegisterResponse savePreRegisterData(String email, String confirmEmail, String fullName, String password) {
+    public RegisterResponse registerUser(String email, String confirmEmail, String fullName, String password) {
         if (!Objects.equals(email, confirmEmail)) {
             throw new NotTheSameEmailException(ExceptionCode.NOT_THE_SAME_EMAIL);
         }
@@ -48,12 +51,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .password(passwordEncoder.encode(password))
                         .createdDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime())
                         .build());
-        User savedUser = userService.saveUser(fullName, authData.getId());
-        return buildRegisterResponse(authData.getEmail(), savedUser.getFullName());
+        UserData savedUserData = userService.saveUser(fullName, authData.getId());
+
+        String token = jwtService.generateToken(authData.getEmail(), "admin");
+        return buildRegisterResponse(authData.getEmail(), savedUserData.getFullName(), token);
+    }
+
+    private RegisterResponse buildRegisterResponse(String email, String fullName, String token) {
+        return RegisterResponse.builder()
+                .email(email)
+                .fullName(fullName)
+                .token(token)
+                .build();
     }
 
     @Override
-    public RegisterResponse signInUser(String email, String password) {
+    public SignInResponse signInUser(String email, String password) {
         AuthenticationData authData = getAuthDataByEmail(email);
 
         if(authData.getActive() == Boolean.FALSE){
@@ -64,21 +77,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new WrongPasswordException(ExceptionCode.WRONG_PASSWORD);
         }
 
-        User userData = userService.findByAuthId(authData.getId());
+        UserData userData = userService.findByAuthId(authData.getId());
+        String token = jwtService.generateToken(authData.getEmail(), "admin");
 
-        return buildRegisterResponse(authData.getEmail(), userData.getFullName());
+        return buildSignInResponse(authData.getEmail(), userData.getFullName(), token);
+    }
+
+    private SignInResponse buildSignInResponse(String email, String fullName, String token) {
+        return SignInResponse.builder()
+                .email(email)
+                .fullName(fullName)
+                .token(token)
+                .build();
     }
 
     private AuthenticationData getAuthDataByEmail(String email) {
         return authenticationRepository.findByEmail(email).orElseThrow(
                 () -> new EmailNotRegisteredException(ExceptionCode.NOT_REGISTERED));
-    }
-
-    private RegisterResponse buildRegisterResponse(String email, String fullName) {
-        return RegisterResponse.builder()
-                .email(email)
-                .fullName(fullName)
-                .build();
     }
 
     @Override

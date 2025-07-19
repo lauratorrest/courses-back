@@ -11,26 +11,26 @@ import lombok.Setter;
 @Setter
 public class RegistrationRequest {
 
-    @Schema(description = "User email")
-    @NotBlank(message = "User email cannot be blank")
-    @Size(max = 100, message = "User email must be {max} characters or less")
+    @Schema(description = "UserData email")
+    @NotBlank(message = "UserData email cannot be blank")
+    @Size(max = 100, message = "UserData email must be {max} characters or less")
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", message = "Invalid email format")
     private String email;
 
-    @Schema(description = "User confirmation email")
-    @NotBlank(message = "User confirmation email cannot be blank")
-    @Size(max = 100, message = "User confirmation email must be {max} characters or less")
+    @Schema(description = "UserData confirmation email")
+    @NotBlank(message = "UserData confirmation email cannot be blank")
+    @Size(max = 100, message = "UserData confirmation email must be {max} characters or less")
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", message = "Invalid email format")
     private String confirmEmail;
 
-    @Schema(description = "User name")
-    @NotBlank(message = "User name cannot be blank")
-    @Size(min = 5, max = 100, message = "User name must be between {min} and {max} characters")
-    @Pattern(regexp = "^[A-Za-zÀ-ÿ\\s]+$", message = "User name can only contain letters and spaces")
+    @Schema(description = "UserData name")
+    @NotBlank(message = "UserData name cannot be blank")
+    @Size(min = 5, max = 100, message = "UserData name must be between {min} and {max} characters")
+    @Pattern(regexp = "^[A-Za-zÀ-ÿ\\s]+$", message = "UserData name can only contain letters and spaces")
     private String fullName;
 
-    @Schema(description = "User password")
-    @Size(min = 8, message = "User password must be {min} characters or more")
+    @Schema(description = "UserData password")
+    @Size(min = 8, message = "UserData password must be {min} characters or more")
     @Pattern(
             regexp = "^(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$",
             message = "La contraseña debe tener al menos una mayúscula, un número y mínimo 8 caracteres"

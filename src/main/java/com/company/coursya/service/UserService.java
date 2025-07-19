@@ -1,13 +1,16 @@
 package com.company.coursya.service;
 
 import com.company.coursya.api.dto.user.UserInfoResponse;
-import com.company.coursya.model.User;
+import com.company.coursya.model.UserData;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UserService {
 
-    User saveUser(String fullName, String authId);
+    UserData saveUser(String fullName, String authId);
 
-    User findByAuthId(String id);
+    UserData findByAuthId(String id);
 
     UserInfoResponse findByEmail(String email);
+
+    UserDetails findUserDetailsByEmail(String email);
 }

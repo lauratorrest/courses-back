@@ -3,7 +3,6 @@ server:
 spring:
   application:
     name: courses-back
-    path: /coursya/v1/api
   data:
     mongodb:
       uri: ${MONGODB_URI}/${DB_NAME}
