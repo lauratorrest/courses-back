@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -46,7 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .email(email)
                         .active(Boolean.TRUE)
                         .password(passwordEncoder.encode(password))
-                        .createdDate(ZonedDateTime.now(ZoneId.of("America/Bogota")).toLocalDateTime())
+                        .createdDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime())
                         .build());
         User savedUser = userService.saveUser(fullName, authData.getId());
         return buildRegisterResponse(authData.getEmail(), savedUser.getFullName());
