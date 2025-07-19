@@ -3,7 +3,6 @@ package com.company.coursya.api.controller;
 import com.company.coursya.api.dto.authentication.RegisterResponse;
 import com.company.coursya.api.dto.authentication.RegistrationRequest;
 import com.company.coursya.service.AuthenticationService;
-import com.company.coursya.shared.util.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -17,16 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @Tag(name = "Coursya Authentication API", description = "End-points for authentication functions")
-@CrossOrigin
+@CrossOrigin("*")
 @RestController
-@RequestMapping(Constants.APP_PATH)
+@RequestMapping("${spring.application.path}")
 public class AthenticationController {
 
     private final AuthenticationService authenticationService;
 
     @Operation(summary = "Pre-registration")
-    @PostMapping("/pre-register")
-    public ResponseEntity<RegisterResponse> preSignUpUser(@Valid @RequestBody RegistrationRequest request) {
+    @PostMapping("/register")
+    public ResponseEntity<RegisterResponse> signUpUser(@Valid @RequestBody RegistrationRequest request) {
         return ResponseEntity.ok(authenticationService.savePreRegisterData(
                 request.getEmail(), request.getConfirmEmail(), request.getFullName(), request.getPassword()));
     }
