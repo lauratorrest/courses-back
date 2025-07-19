@@ -1,5 +1,6 @@
 package com.company.coursya.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,7 +17,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String PATH = "/coursya/v1/api";
+    @Value("${spring.application.path}")
+    private String path;
+    @Value("${frontend.url}")
+    private String frontUrl;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -30,8 +34,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                PATH + "/sign-in",
-                                PATH + "/register",
+                                path + "/sign-in",
+                                path + "/register",
+                                path + "/user/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
@@ -46,7 +51,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:4200");
+        config.addAllowedOrigin(frontUrl);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 

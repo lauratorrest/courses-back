@@ -7,3 +7,5 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}/${DB_NAME}
+frontend:
+  url: ${FRONT_URL}

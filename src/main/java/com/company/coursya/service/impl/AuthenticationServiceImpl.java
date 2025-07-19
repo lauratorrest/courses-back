@@ -54,8 +54,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public RegisterResponse signInUser(String email, String password) {
-        AuthenticationData authData = authenticationRepository.findByEmail(email).orElseThrow(
-                () -> new EmailNotRegisteredException(ExceptionCode.NOT_REGISTERED));
+        AuthenticationData authData = getAuthDataByEmail(email);
 
         if(authData.getActive() == Boolean.FALSE){
             throw new InactiveUserException(ExceptionCode.INACTIVE_USER);
@@ -70,10 +69,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return buildRegisterResponse(authData.getEmail(), userData.getFullName());
     }
 
+    private AuthenticationData getAuthDataByEmail(String email) {
+        return authenticationRepository.findByEmail(email).orElseThrow(
+                () -> new EmailNotRegisteredException(ExceptionCode.NOT_REGISTERED));
+    }
+
     private RegisterResponse buildRegisterResponse(String email, String fullName) {
         return RegisterResponse.builder()
                 .email(email)
                 .fullName(fullName)
                 .build();
     }
+
+    @Override
+    public AuthenticationData findByEmail(String email) {
+        return getAuthDataByEmail(email);
+    }
+
 }
