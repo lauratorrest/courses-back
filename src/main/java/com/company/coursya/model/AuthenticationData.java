@@ -1,5 +1,6 @@
 package com.company.coursya.model;
 
+import com.company.coursya.model.enums.UserRoleEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class AuthenticationData {
     private String id;
     private String email;
     private String password;
+    private UserRoleEnum userRole;
     private Boolean active;
     private LocalDateTime createdDate;
 }
