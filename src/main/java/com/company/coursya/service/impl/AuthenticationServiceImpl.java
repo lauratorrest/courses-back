@@ -5,6 +5,7 @@ import com.company.coursya.api.dto.authentication.SignInResponse;
 import com.company.coursya.jwt.JwtService;
 import com.company.coursya.model.AuthenticationData;
 import com.company.coursya.model.UserData;
+import com.company.coursya.model.enums.UserRoleEnum;
 import com.company.coursya.repository.AuthenticationRepository;
 import com.company.coursya.service.AuthenticationService;
 import com.company.coursya.service.UserService;
@@ -34,7 +35,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
 
     @Override
-    public RegisterResponse registerUser(String email, String confirmEmail, String fullName, String password) {
+    public RegisterResponse registerUser(String email,
+                                         String confirmEmail,
+                                         String fullName,
+                                         String password,
+                                         UserRoleEnum role) {
         if (!Objects.equals(email, confirmEmail)) {
             throw new NotTheSameEmailException(ExceptionCode.NOT_THE_SAME_EMAIL);
         }
@@ -49,11 +54,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .email(email)
                         .active(Boolean.TRUE)
                         .password(passwordEncoder.encode(password))
+                        .userRole(role)
                         .createdDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime())
                         .build());
         UserData savedUserData = userService.saveUser(fullName, authData.getId());
 
-        String token = jwtService.generateToken(authData.getEmail(), "admin");
+        String token = jwtService.generateToken(authData.getEmail(), authData.getUserRole().name().toLowerCase());
         return buildRegisterResponse(authData.getEmail(), savedUserData.getFullName(), token);
     }
 
@@ -78,7 +84,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         UserData userData = userService.findByAuthId(authData.getId());
-        String token = jwtService.generateToken(authData.getEmail(), "admin");
+        String token = jwtService.generateToken(authData.getEmail(), authData.getUserRole().name().toLowerCase());
 
         return buildSignInResponse(authData.getEmail(), userData.getFullName(), token);
     }

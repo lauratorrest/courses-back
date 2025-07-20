@@ -1,5 +1,6 @@
 package com.company.coursya.api.dto.authentication;
 
+import com.company.coursya.model.enums.UserRoleEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -36,4 +37,6 @@ public class RegistrationRequest {
             message = "La contraseña debe tener al menos una mayúscula, un número y mínimo 8 caracteres"
     )
     private String password;
+
+    private UserRoleEnum role;
 }

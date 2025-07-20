@@ -30,7 +30,11 @@ public class AthenticationController {
     @PostMapping(Constants.REGISTER_PATH)
     public ResponseEntity<RegisterResponse> signUpUser(@Valid @RequestBody RegistrationRequest request) {
         return ResponseEntity.ok(authenticationService.registerUser(
-                request.getEmail(), request.getConfirmEmail(), request.getFullName(), request.getPassword()));
+                request.getEmail(),
+                request.getConfirmEmail(),
+                request.getFullName(),
+                request.getPassword(),
+                request.getRole()));
     }
 
     @Operation(summary = "Sign In")
