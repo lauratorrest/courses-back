@@ -1,0 +1,25 @@
+package com.company.coursya.shared.util;
+
+import java.util.List;
+
+public class Constants {
+
+    public static final String API_PATH = "/coursya/v1/api";
+    public static final String REGISTER_PATH = "/register";
+    public static final String SIGN_IN_PATH = "/sign-in";
+    public static final String FIND_USER_BY_EMAIL = "/user/find-by-email";
+
+    public static final String[] PUBLIC_ENDPOINTS = {
+            API_PATH + REGISTER_PATH,
+            API_PATH + SIGN_IN_PATH,
+            API_PATH + FIND_USER_BY_EMAIL,
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
+
+    public static final List<String> VALID_PATHS = List.of(
+            API_PATH + REGISTER_PATH,
+            API_PATH + SIGN_IN_PATH
+    );
+}

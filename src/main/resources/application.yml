@@ -6,5 +6,5 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}/${DB_NAME}
-  jwt:
-    secret: ${SECRET_KEY}
+frontend:
+  url: ${FRONT_URL}
