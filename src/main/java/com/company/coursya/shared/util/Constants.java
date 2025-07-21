@@ -8,11 +8,13 @@ public class Constants {
     public static final String REGISTER_PATH = "/register";
     public static final String SIGN_IN_PATH = "/sign-in";
     public static final String FIND_USER_BY_EMAIL = "/user/find-by-email";
+    public static final String FIND_DETAILED_USER_BY_EMAIL = "/user/details-by-email";
 
     public static final String[] PUBLIC_ENDPOINTS = {
             API_PATH + REGISTER_PATH,
             API_PATH + SIGN_IN_PATH,
             API_PATH + FIND_USER_BY_EMAIL,
+            API_PATH + FIND_DETAILED_USER_BY_EMAIL,
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html"

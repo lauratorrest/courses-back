@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
-public class UserInfoResponse {
+public class UserBasicInfoResponse {
 
     private String fullName;
 }

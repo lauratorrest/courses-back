@@ -1,21 +1,17 @@
-package com.company.coursya.model;
+package com.company.coursya.api.dto.user;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.time.LocalDateTime;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @Builder
-@Document(collection = "users")
-public class UserData {
+public class UserDetailedInfoResponse {
 
-    private String id;
     private String fullName;
-    private String authId;
     private String webPageUrl;
     private String linkedInUrl;
     private String youtubeChannelUrl;
@@ -24,5 +20,4 @@ public class UserData {
     private String profilePictureUrl;
     private String profession;
     private String aboutMe;
-    private LocalDateTime updatedInfoDate;
 }

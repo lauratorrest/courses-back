@@ -1,6 +1,7 @@
 package com.company.coursya.service.impl;
 
-import com.company.coursya.api.dto.user.UserInfoResponse;
+import com.company.coursya.api.dto.user.UserBasicInfoResponse;
+import com.company.coursya.api.dto.user.UserDetailedInfoResponse;
 import com.company.coursya.model.AuthenticationData;
 import com.company.coursya.model.UserData;
 import com.company.coursya.repository.UserRepository;
@@ -39,10 +40,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoResponse findByEmail(String email) {
+    public UserBasicInfoResponse findByEmail(String email) {
         AuthenticationData authenticationData = getAuthDataByEmail(email);
         UserData foundUserData = findByAuthId(authenticationData.getId());
-        return UserInfoResponse.builder().fullName(foundUserData.getFullName()).build();
+        return UserBasicInfoResponse.builder().fullName(foundUserData.getFullName()).build();
     }
 
     private AuthenticationData getAuthDataByEmail(String email) {
@@ -54,4 +55,22 @@ public class UserServiceImpl implements UserService {
         AuthenticationData authenticationData = getAuthDataByEmail(email);
         return new User(authenticationData.getEmail(), authenticationData.getPassword(), new ArrayList<>());
     }
+
+    @Override
+    public UserDetailedInfoResponse findDetailedUserByEmail(String email) {
+        AuthenticationData authenticationData = getAuthDataByEmail(email);
+        UserData user = findByAuthId(authenticationData.getId());
+        return UserDetailedInfoResponse.builder()
+                .fullName(user.getFullName())
+                .profilePictureUrl(user.getProfilePictureUrl())
+                .webPageUrl(user.getWebPageUrl())
+                .linkedInUrl(user.getLinkedInUrl())
+                .youtubeChannelUrl(user.getYoutubeChannelUrl())
+                .facebookUrl(user.getFacebookUrl())
+                .instagramUrl(user.getInstagramUrl())
+                .profession(user.getProfession())
+                .aboutMe(user.getAboutMe())
+                .build();
+    }
+
 }
