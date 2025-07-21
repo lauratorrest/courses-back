@@ -1,5 +1,6 @@
 package com.company.coursya.service;
 
+import com.company.coursya.api.dto.user.UpdateUserDetailsRequest;
 import com.company.coursya.api.dto.user.UserBasicInfoResponse;
 import com.company.coursya.api.dto.user.UserDetailedInfoResponse;
 import com.company.coursya.model.UserData;
@@ -16,4 +17,6 @@ public interface UserService {
     UserDetails findUserDetailsByEmail(String email);
 
     UserDetailedInfoResponse findDetailedUserByEmail(String email);
+
+    UserDetailedInfoResponse updateUserDetails(UpdateUserDetailsRequest request);
 }

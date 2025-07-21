@@ -1,5 +1,6 @@
 package com.company.coursya.service.impl;
 
+import com.company.coursya.api.dto.user.UpdateUserDetailsRequest;
 import com.company.coursya.api.dto.user.UserBasicInfoResponse;
 import com.company.coursya.api.dto.user.UserDetailedInfoResponse;
 import com.company.coursya.model.AuthenticationData;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -60,6 +62,36 @@ public class UserServiceImpl implements UserService {
     public UserDetailedInfoResponse findDetailedUserByEmail(String email) {
         AuthenticationData authenticationData = getAuthDataByEmail(email);
         UserData user = findByAuthId(authenticationData.getId());
+        return UserDetailedInfoResponse.builder()
+                .fullName(user.getFullName())
+                .profilePictureUrl(user.getProfilePictureUrl())
+                .webPageUrl(user.getWebPageUrl())
+                .linkedInUrl(user.getLinkedInUrl())
+                .youtubeChannelUrl(user.getYoutubeChannelUrl())
+                .facebookUrl(user.getFacebookUrl())
+                .instagramUrl(user.getInstagramUrl())
+                .profession(user.getProfession())
+                .aboutMe(user.getAboutMe())
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public UserDetailedInfoResponse updateUserDetails(UpdateUserDetailsRequest request) {
+        AuthenticationData authenticationData = getAuthDataByEmail(request.getEmail());
+        UserData user = findByAuthId(authenticationData.getId());
+
+        user.setFullName(request.getFullName());
+        user.setWebPageUrl(request.getWebPageUrl());
+        user.setLinkedInUrl(request.getLinkedInUrl());
+        user.setYoutubeChannelUrl(request.getYoutubeChannelUrl());
+        user.setFacebookUrl(request.getFacebookUrl());
+        user.setInstagramUrl(request.getInstagramUrl());
+        user.setProfession(request.getProfession());
+        user.setAboutMe(request.getAboutMe());
+
+        userRepository.save(user);
+
         return UserDetailedInfoResponse.builder()
                 .fullName(user.getFullName())
                 .profilePictureUrl(user.getProfilePictureUrl())

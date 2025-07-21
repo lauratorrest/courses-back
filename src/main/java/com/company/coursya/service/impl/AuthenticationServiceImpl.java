@@ -1,11 +1,11 @@
 package com.company.coursya.service.impl;
 
 import com.company.coursya.api.dto.authentication.RegisterResponse;
+import com.company.coursya.api.dto.authentication.RegistrationRequest;
 import com.company.coursya.api.dto.authentication.SignInResponse;
 import com.company.coursya.jwt.JwtService;
 import com.company.coursya.model.AuthenticationData;
 import com.company.coursya.model.UserData;
-import com.company.coursya.model.enums.UserRoleEnum;
 import com.company.coursya.repository.AuthenticationRepository;
 import com.company.coursya.service.AuthenticationService;
 import com.company.coursya.service.UserService;
@@ -35,29 +35,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
 
     @Override
-    public RegisterResponse registerUser(String email,
-                                         String confirmEmail,
-                                         String fullName,
-                                         String password,
-                                         UserRoleEnum role) {
-        if (!Objects.equals(email, confirmEmail)) {
+    public RegisterResponse registerUser(RegistrationRequest request) {
+        if (!Objects.equals(request.getEmail(), request.getConfirmEmail())) {
             throw new NotTheSameEmailException(ExceptionCode.NOT_THE_SAME_EMAIL);
         }
 
-        Boolean emailAlreadyRegistered = authenticationRepository.existsByEmail(email);
+        Boolean emailAlreadyRegistered = authenticationRepository.existsByEmail(request.getEmail());
         if (Boolean.TRUE.equals(emailAlreadyRegistered)) {
             throw new EmailAlreadyRegisteredException(ExceptionCode.EMAIL_ALREADY_EXISTS);
         }
 
         AuthenticationData authData = authenticationRepository.save(
                 AuthenticationData.builder()
-                        .email(email)
+                        .email(request.getEmail())
                         .active(Boolean.TRUE)
-                        .password(passwordEncoder.encode(password))
-                        .userRole(role)
+                        .password(passwordEncoder.encode(request.getPassword()))
+                        .userRole(request.getRole())
                         .createdDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime())
                         .build());
-        UserData savedUserData = userService.saveUser(fullName, authData.getId());
+        UserData savedUserData = userService.saveUser(request.getFullName(), authData.getId());
 
         String token = jwtService.generateToken(authData.getEmail(), authData.getUserRole().name().toLowerCase());
         return buildRegisterResponse(authData.getEmail(), savedUserData.getFullName(), token);
