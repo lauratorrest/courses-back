@@ -8,6 +8,7 @@ import com.company.coursya.service.UserService;
 import com.company.coursya.shared.util.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,7 +41,7 @@ public class UserController {
 
     @Operation(summary = "Updating Detailed data info")
     @PutMapping(Constants.UPDATE_USER_DETAILS)
-    public ResponseEntity<UserDetailedInfoResponse> updateDetails(@RequestBody UpdateUserDetailsRequest request) {
+    public ResponseEntity<UserDetailedInfoResponse> updateDetails(@Valid @RequestBody UpdateUserDetailsRequest request) {
         return ResponseEntity.ok(userService.updateUserDetails(request));
     }
 
