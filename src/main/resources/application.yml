@@ -8,3 +8,7 @@ spring:
       uri: ${MONGODB_URI}/${DB_NAME}
 frontend:
   url: ${FRONT_URL}
+cloudinary:
+  cloud_name: du1lw1gw9
+  api_key: 855645475456234
+  api_secret: tQlfnQlGc6GlNLm8XNRYd_M5Wro

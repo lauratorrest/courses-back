@@ -1,6 +1,7 @@
 package com.company.coursya.api.controller;
 
 import com.company.coursya.api.dto.user.EmailRequest;
+import com.company.coursya.api.dto.user.UpdateProfilePicUrlRequest;
 import com.company.coursya.api.dto.user.UpdateUserDetailsRequest;
 import com.company.coursya.api.dto.user.UserBasicInfoResponse;
 import com.company.coursya.api.dto.user.UserDetailedInfoResponse;
@@ -43,6 +44,12 @@ public class UserController {
     @PutMapping(Constants.UPDATE_USER_DETAILS)
     public ResponseEntity<UserDetailedInfoResponse> updateDetails(@Valid @RequestBody UpdateUserDetailsRequest request) {
         return ResponseEntity.ok(userService.updateUserDetails(request));
+    }
+
+    @Operation(summary = "Updating user profile picture url")
+    @PutMapping(Constants.UPDATE_PROFILE_PIC_URL)
+    public void updateProfilePicUrl(@RequestBody UpdateProfilePicUrlRequest request) {
+        userService.updateUserProfilePicUrl(request);
     }
 
 }

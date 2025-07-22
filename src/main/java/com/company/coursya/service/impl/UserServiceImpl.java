@@ -1,5 +1,6 @@
 package com.company.coursya.service.impl;
 
+import com.company.coursya.api.dto.user.UpdateProfilePicUrlRequest;
 import com.company.coursya.api.dto.user.UpdateUserDetailsRequest;
 import com.company.coursya.api.dto.user.UserBasicInfoResponse;
 import com.company.coursya.api.dto.user.UserDetailedInfoResponse;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
@@ -43,25 +45,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserBasicInfoResponse findByEmail(String email) {
-        AuthenticationData authenticationData = getAuthDataByEmail(email);
-        UserData foundUserData = findByAuthId(authenticationData.getId());
-        return UserBasicInfoResponse.builder().fullName(foundUserData.getFullName()).build();
+        UserData foundUserData = findUserByEmail(email);
+        return UserBasicInfoResponse.builder()
+                .fullName(foundUserData.getFullName())
+                .profilePictureUrl(foundUserData.getProfilePictureUrl())
+                .build();
     }
 
-    private AuthenticationData getAuthDataByEmail(String email) {
-        return authenticationService.findByEmail(email);
+    private UserData findUserByEmail(String email) {
+        AuthenticationData authenticationData = authenticationService.findByEmail(email);
+        return findByAuthId(authenticationData.getId());
     }
 
     @Override
     public UserDetails findUserDetailsByEmail(String email) {
-        AuthenticationData authenticationData = getAuthDataByEmail(email);
+        AuthenticationData authenticationData = authenticationService.findByEmail(email);
         return new User(authenticationData.getEmail(), authenticationData.getPassword(), new ArrayList<>());
     }
 
     @Override
     public UserDetailedInfoResponse findDetailedUserByEmail(String email) {
-        AuthenticationData authenticationData = getAuthDataByEmail(email);
-        UserData user = findByAuthId(authenticationData.getId());
+        UserData user = findUserByEmail(email);
         return UserDetailedInfoResponse.builder()
                 .fullName(user.getFullName())
                 .profilePictureUrl(user.getProfilePictureUrl())
@@ -78,8 +82,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDetailedInfoResponse updateUserDetails(UpdateUserDetailsRequest request) {
-        AuthenticationData authenticationData = getAuthDataByEmail(request.getEmail());
-        UserData user = findByAuthId(authenticationData.getId());
+        UserData user = findUserByEmail(request.getEmail());
 
         user.setFullName(request.getFullName());
         user.setWebPageUrl(request.getWebPageUrl());
@@ -89,6 +92,7 @@ public class UserServiceImpl implements UserService {
         user.setInstagramUrl(request.getInstagramUrl());
         user.setProfession(request.getProfession());
         user.setAboutMe(request.getAboutMe());
+        user.setUpdatedInfoDate(LocalDateTime.now());
 
         userRepository.save(user);
 
@@ -103,6 +107,15 @@ public class UserServiceImpl implements UserService {
                 .profession(user.getProfession())
                 .aboutMe(user.getAboutMe())
                 .build();
+    }
+
+    @Transactional
+    @Override
+    public void updateUserProfilePicUrl(UpdateProfilePicUrlRequest request) {
+        UserData foundUser = findUserByEmail(request.getEmail());
+        foundUser.setProfilePictureUrl(request.getProfilePictureUrl());
+        foundUser.setUpdateProfilePicDate(LocalDateTime.now());
+        userRepository.save(foundUser);
     }
 
 }

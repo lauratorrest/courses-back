@@ -10,6 +10,8 @@ public class Constants {
     public static final String FIND_USER_BY_EMAIL = "/user/find-by-email";
     public static final String FIND_DETAILED_USER_BY_EMAIL = "/user/details-by-email";
     public static final String UPDATE_USER_DETAILS = "/user/update-details";
+    public static final String UPDATE_PROFILE_PIC_URL = "/user/update-pic-url";
+    public static final String UPLOAD_FILE = "/file/upload";
 
     public static final String[] PUBLIC_ENDPOINTS = {
             API_PATH + REGISTER_PATH,
@@ -17,6 +19,8 @@ public class Constants {
             API_PATH + FIND_USER_BY_EMAIL,
             API_PATH + FIND_DETAILED_USER_BY_EMAIL,
             API_PATH + UPDATE_USER_DETAILS,
+            API_PATH + UPDATE_PROFILE_PIC_URL,
+            API_PATH + UPLOAD_FILE,
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-ui.html"

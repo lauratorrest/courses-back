@@ -25,4 +25,5 @@ public class UserData {
     private String profession;
     private String aboutMe;
     private LocalDateTime updatedInfoDate;
+    private LocalDateTime updateProfilePicDate;
 }

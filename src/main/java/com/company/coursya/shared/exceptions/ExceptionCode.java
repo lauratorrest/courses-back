@@ -12,7 +12,8 @@ public enum ExceptionCode {
     NOT_REGISTERED("ERR-003", "No tenemos registrado ese correo."),
     WRONG_PASSWORD("ERR-004", "Contraseña equivocada."),
     USER_NOT_FOUND("ERR-005", "No hay ningún usuario asociado al correo."),
-    INACTIVE_USER("ERR-006", "Usuario inactivo");
+    INACTIVE_USER("ERR-006", "Usuario inactivo"),
+    FILE_UPLOADING_EXCEPTION("ERR-007", "Error al tratar de subir archivo.");
 
     private final String code;
     private final String message;
