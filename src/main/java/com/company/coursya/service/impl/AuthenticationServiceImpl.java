@@ -71,7 +71,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public SignInResponse signInUser(String email, String password) {
         AuthenticationData authData = getAuthDataByEmail(email);
 
-        if(authData.getActive() == Boolean.FALSE){
+        if (authData.getActive() == Boolean.FALSE) {
             throw new InactiveUserException(ExceptionCode.INACTIVE_USER);
         }
 

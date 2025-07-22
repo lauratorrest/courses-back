@@ -23,10 +23,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${frontend.url}")
-    private String frontUrl;
     private final JwtFilterImpl jwtFilter;
     private final UserService userService;
+    @Value("${frontend.url}")
+    private String frontUrl;
 
     public SecurityConfig(JwtFilterImpl jwtFilterImpl, UserService userService) {
         this.jwtFilter = jwtFilterImpl;
