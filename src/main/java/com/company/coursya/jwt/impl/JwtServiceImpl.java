@@ -17,7 +17,7 @@ import java.util.function.Function;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    public static final long TOKEN_EXPIRATION_TIME = 1000L * 60 * 60 * 24; // 1 day
+    public static final long TOKEN_EXPIRATION_TIME = 1000L * 60 * 60 * 6; // 6 hours
     private static final String SECRET = "";
     private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(Base64.getDecoder().decode(SECRET));
 

@@ -12,6 +12,7 @@ public class Constants {
     public static final String UPDATE_USER_DETAILS = "/user/update-details";
     public static final String UPDATE_PROFILE_PIC_URL = "/user/update-pic-url";
     public static final String UPLOAD_FILE = "/file/upload";
+    public static final String FIND_COURSES = "/course/find-all";
 
     public static final String[] PUBLIC_ENDPOINTS = {
             API_PATH + REGISTER_PATH,
@@ -21,6 +22,7 @@ public class Constants {
             API_PATH + UPDATE_USER_DETAILS,
             API_PATH + UPDATE_PROFILE_PIC_URL,
             API_PATH + UPLOAD_FILE,
+            API_PATH + FIND_COURSES,
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-ui.html"
