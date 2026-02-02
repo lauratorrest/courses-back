@@ -3,7 +3,7 @@ package com.company.coursya.service;
 import com.company.coursya.api.dto.files.FileUploadResponse;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface CloudinaryService {
+public interface AzureMediaService {
 
-    FileUploadResponse uploadFile(MultipartFile file);
+    FileUploadResponse uploadImage(MultipartFile file, String folder);
 }

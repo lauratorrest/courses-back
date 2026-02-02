@@ -5,7 +5,7 @@ import com.company.coursya.api.dto.authentication.RegistrationRequest;
 import com.company.coursya.api.dto.authentication.SignInRequest;
 import com.company.coursya.api.dto.authentication.SignInResponse;
 import com.company.coursya.service.AuthenticationService;
-import com.company.coursya.shared.util.Constants;
+import com.company.coursya.shared.util.Endpoints;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -21,19 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Coursya Authentication API", description = "End-points for authentication functions")
 @CrossOrigin("*")
 @RestController
-@RequestMapping(Constants.API_PATH)
+@RequestMapping(Endpoints.API_PATH)
 public class AthenticationController {
 
     private final AuthenticationService authenticationService;
 
     @Operation(summary = "Registration")
-    @PostMapping(Constants.REGISTER_PATH)
+    @PostMapping(Endpoints.REGISTER_PATH)
     public ResponseEntity<RegisterResponse> signUpUser(@Valid @RequestBody RegistrationRequest request) {
         return ResponseEntity.ok(authenticationService.registerUser(request));
     }
 
     @Operation(summary = "Sign In")
-    @PostMapping(Constants.SIGN_IN_PATH)
+    @PostMapping(Endpoints.SIGN_IN_PATH)
     public ResponseEntity<SignInResponse> signInUser(@Valid @RequestBody SignInRequest request) {
         return ResponseEntity.ok(authenticationService.signInUser(request.getEmail(), request.getPassword()));
     }

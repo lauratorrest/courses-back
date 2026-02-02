@@ -8,7 +8,7 @@ spring:
       uri: ${MONGODB_URI}/${DB_NAME}
 frontend:
   url: ${FRONT_URL}
-cloudinary:
-  cloud_name:
-  api_key:
-  api_secret:
+azure:
+  storage:
+    connection-string: ${AZURE_BLOB_CONNECTION_STRING}
+    container-name: ${CONTAINER_NAME}

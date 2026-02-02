@@ -1,5 +1,6 @@
 package com.company.coursya.model;
 
+import com.company.coursya.model.enums.BasicStatusEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Course {
     private Double rating;
     private Integer totalRatings;
     private Double price;
+    private BasicStatusEnum status;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 }

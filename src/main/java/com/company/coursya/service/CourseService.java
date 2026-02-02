@@ -7,4 +7,6 @@ import java.util.List;
 public interface CourseService {
 
     List<CourseBasicInfoResponse> findAllActive();
+
+    void saveNewCourse();
 }

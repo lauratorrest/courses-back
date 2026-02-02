@@ -2,7 +2,7 @@ package com.company.coursya.jwt.impl;
 
 import com.company.coursya.jwt.JwtService;
 import com.company.coursya.service.UserService;
-import com.company.coursya.shared.util.Constants;
+import com.company.coursya.shared.util.Endpoints;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -38,7 +38,7 @@ public class JwtFilterImpl extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         // Rutas sin token
-        if (Constants.VALID_PATHS.contains(request.getServletPath())) {
+        if (Endpoints.VALID_PATHS.contains(request.getServletPath())) {
             filterChain.doFilter(request, response);
             return;
         }

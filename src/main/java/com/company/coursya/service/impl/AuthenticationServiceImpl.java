@@ -56,13 +56,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserData savedUserData = userService.saveUser(request.getFullName(), authData.getId());
 
         String token = jwtService.generateToken(authData.getEmail(), authData.getUserRole().name().toLowerCase());
-        return buildRegisterResponse(authData.getEmail(), savedUserData.getFullName(), token);
-    }
-
-    private RegisterResponse buildRegisterResponse(String email, String fullName, String token) {
         return RegisterResponse.builder()
-                .email(email)
-                .fullName(fullName)
+                .email(authData.getEmail())
+                .fullName(savedUserData.getFullName())
                 .token(token)
                 .build();
     }
@@ -82,13 +78,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserData userData = userService.findByAuthId(authData.getId());
         String token = jwtService.generateToken(authData.getEmail(), authData.getUserRole().name().toLowerCase());
 
-        return buildSignInResponse(authData.getEmail(), userData.getFullName(), token);
-    }
-
-    private SignInResponse buildSignInResponse(String email, String fullName, String token) {
         return SignInResponse.builder()
-                .email(email)
-                .fullName(fullName)
+                .email(authData.getEmail())
+                .fullName(userData.getFullName())
                 .token(token)
                 .build();
     }

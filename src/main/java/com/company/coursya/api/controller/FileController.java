@@ -1,8 +1,8 @@
 package com.company.coursya.api.controller;
 
 import com.company.coursya.api.dto.files.FileUploadResponse;
-import com.company.coursya.service.CloudinaryService;
-import com.company.coursya.shared.util.Constants;
+import com.company.coursya.service.AzureMediaService;
+import com.company.coursya.shared.util.Endpoints;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -18,14 +18,15 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "Coursya Files API", description = "End-points for files management functions")
 @CrossOrigin("*")
 @RestController
-@RequestMapping(Constants.API_PATH)
+@RequestMapping(Endpoints.API_PATH)
 public class FileController {
 
-    private final CloudinaryService cloudinaryService;
+    private final AzureMediaService azureMediaService;
 
-    @Operation(summary = "Upload File")
-    @PostMapping(Constants.UPLOAD_FILE)
-    public ResponseEntity<FileUploadResponse> findByEmail(@RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok(cloudinaryService.uploadFile(file));
+
+    @Operation(summary = "Upload Picture Azure")
+    @PostMapping(Endpoints.UPLOAD_FILE_BLOB)
+    public ResponseEntity<FileUploadResponse> uploadBlobPic(@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(azureMediaService.uploadImage(file, "users/profile-images"));
     }
 }

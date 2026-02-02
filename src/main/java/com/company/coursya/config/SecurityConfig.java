@@ -2,7 +2,7 @@ package com.company.coursya.config;
 
 import com.company.coursya.jwt.impl.JwtFilterImpl;
 import com.company.coursya.service.UserService;
-import com.company.coursya.shared.util.Constants;
+import com.company.coursya.shared.util.Endpoints;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -43,7 +43,7 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(Constants.PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(Endpoints.PUBLIC_ENDPOINTS).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
